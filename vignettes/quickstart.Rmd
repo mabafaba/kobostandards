@@ -1,0 +1,41 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE
+)
+```
+
+```{r}
+library(kobostandards)
+```
+
+### Load kobo tool, data, ...:
+
+
+```{r}
+tool_questions<-read.csv("../tests/testthat/kobo questions.csv")
+tool_choices<-read.csv("../tests/testthat/kobo choices.csv")
+
+```
+
+
+### Identify potential issues:
+
+```{r}
+
+check_input(questions = tool_questions,
+            choices= tool_choices)
+
+```

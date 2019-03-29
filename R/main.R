@@ -11,7 +11,7 @@ check_input<-function(data=NULL,questions=NULL,choices=NULL,samplingframe=NULL,a
 
                 data_issues<-check_input_data(data)
            questions_issues<-check_input_questionnaire_questions(questions)
-             choices_issues<-check_input_questionnaire_choices(questions)
+             choices_issues<-check_input_questionnaire_choices(choices)
   data_questionnaire_issues<-check_data_match_questionnaire(data,questions,choices)
 
   rbind(data_issues,questions_issues,choices_issues,data_questionnaire_issues)
