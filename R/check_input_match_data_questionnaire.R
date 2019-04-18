@@ -1,7 +1,11 @@
 
-
-check_data_match_questionnaire<-function(data,questions,choices){
-
+#' Check for inconsistencies between an xlsform questionnaire and a dataset
+#' @param data dataset as data.frame
+#' @param xlsform questions sheet as data.frame
+#' @param xlsform choices sheet as data.frame
+#' @value issues in standardised format (see ?new_issues for details)
+#' @export
+check_input_match_data_questionnaire<-function(data,questions,choices){
   could_not_check_issue<-new_issues("could not check data against questionnaire",
                                     affected_variables = "ALL",
                                     severity = "critical")
@@ -22,11 +26,15 @@ check_data_match_questionnaire<-function(data,questions,choices){
                                    choices,
                                    choices.label.column.to.use = "label..English")
   },error=function(e){
-    could_not_check_issue$message<-paste0("loading questionnaire failed with error: ",e$message)
+    could_not_check_issue$comment<-paste0("loading questionnaire failed with error: ",e$message)
     return(could_not_check_issue)
   })
 
+
   if(is.data.frame(questionnaire)){
+    # if loading was not successful,
+    #"questionnaire" was assigned a data.frame of issues
+    # instead of the questionnaire, so..:
     return(could_not_check_issue)
   }
 

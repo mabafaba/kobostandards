@@ -6,7 +6,7 @@ check_input_questionnaire_questions<-function(questions){
 
   issues<-new_issues()
   if(!is.data.frame(questions)){
-    add_issues(issues)<-new_issues(issue = "questionnaire is not a data frame",
+    add_issues(issues)<-new_issues(issue = "questions are not a data frame",
                                    affected_files = "questions",
                                    affected_variables = "ALL",
                                    severity = "critical")

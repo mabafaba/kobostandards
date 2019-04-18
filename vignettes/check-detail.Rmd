@@ -1,0 +1,91 @@
+---
+title: "What checks are performed?"
+author: "Martin Barner"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{What checks are performed?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overview
+
+This packages checks for inconsistencies between xlsform questionnaires (kobo tools), datasets and analysis plans.
+There is a function to check each input, and to check each combination:
+
+Runs all checks (depending on which input is provided):
+
+- check_input()
+
+
+
+## Which Issues may be raised?
+
+### Data
+
+- _data is not a data.frame_ (critical)
+- _duplicate data column header_ (critical)
+
+### Questionnaire Questions
+
+- _questions are not a data frame_ (critical)
+- _questions do not contain column 'type'_ (critical)
+- _questions do not contain column 'name'_ (critical)
+- _illegal question type_ (critical)
+- _variable [[variable name]] used in 'relevant' column not found in question 'name'_ (critical)
+- _failed to evaluate 'relevant' condition_ (critical)
+- _questions do not contain a column with the word 'label'_ (minor)
+
+### Questionnaire Choices
+
+- _choices is not a data frame_ (critical)
+
+### Data vs. Questionnaire
+
+- _could not check data against questionnaire (i.e. koboquest::load_questionnaire() throws an error)_ (critical)
+- _choices is not a data frame_ (critical)
+- _data type does not match type defined in questionnaire_ (critical)
+- _data column not found in questionnaire_ (minor)
+- _select_one or select_multiple values in data that are not listed in the questionnaire_ (minor)
+
+
+## checks that are not (yet) implemented but should be:
+
+### check_input_samplingframe()
+- _no stratum column_
+- _no population (numeric only) column_
+- _population column not all numeric_
+- _strata names not unique_
+- _population size can not be zero_
+- _stratum name can not be empty_
+- _population can not be empty_
+- _sampling frame should only have two columns_
+
+
+
+
+check_input_match_data_samplingframe<-function(samplingframe,data){}
+
+check_input_match_questionnaire_samplingframe<-function(samplingframe,data){}
+
+check_input_match_questionnaire_analysisplan<-function(samplinframe,data){}
+
+check_input_match_data_analysisplan<-function(samplinframe,data){}
+
+
+
+
+
+
+
+
+
+
