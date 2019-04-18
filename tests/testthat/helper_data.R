@@ -1,5 +1,4 @@
-questions<-read.csv("./tests/testthat/kobo questions.csv")
-choices<-read.csv("./tests/testthat/kobo choices.csv")
-data<-read.csv("./tests/testthat/testdata.csv")
-
+questions<-read.csv("./kobo questions.csv")
+choices<-read.csv("./kobo choices.csv")
+data<-read.csv("./testdata.csv")
 

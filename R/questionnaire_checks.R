@@ -55,9 +55,6 @@ check_input_questionnaire_choices<-function(choices){
                                    affected_variables = "ALL",
                                    severity = "critical")
   }
-
-
-
 }
 
 
@@ -111,7 +108,7 @@ check_questions_relevant<-function(questions){
 
   condition_vars_not_found<-condition_vars[!condition_vars$found,]
 
-  vars_not_found_issues<-new_issues(issue=paste0("variable '",condition_vars_not_found$vars,"' used in 'relevant' condition not found in question 'name'"),
+  vars_not_found_issues<-new_issues(issue=paste0("variable '",condition_vars_not_found[,"vars"],"' used in 'relevant' condition not found in question 'name'"),
              affected_files = 'questions',
              severity = "critical",
              affected_variables = as.character(questions$name)[condition_vars_not_found$id],

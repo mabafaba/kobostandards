@@ -32,8 +32,8 @@ check_data_match_questionnaire<-function(data,questions,choices){
 
   issues<-check_all_variables_in_questionnaire(names(data),questionnaire)
 
-  add_issues(issues)<-check_data_types_match_questionnaire(data,questionnaire)
-
+  add_issues(issues)<-check_data_types_match_questionnaire(data, questionnaire)
+  add_issues(issues)<-        check_data_values_in_choices(data, questionnaire)
 }
 
 
@@ -92,14 +92,13 @@ return(new_issues(issue = rep("data type does not match type defined in question
 }
 
 
-
-
 compare_question_type<-function(x,type){
+  if(all(is.na(x))){return("no missmatch identified")}
   if(type %in% c("select_one")){
-    if(!(class(x) %in% c("factor","character"))){return(paste0("question is 'select_one' but data is class:",class(x)))}
+    if(!(class(x) %in% c("factor","character","numeric","integer"))){return(paste0("question is 'select_one' but data is class:",class(x)))}
   }
   if(type %in% c("select_multiple")){
-    if(!(class(x) %in% c("factor","character"))){return(paste0("question is 'select_multiple' but data is class:",class(x)))}
+    if(!(class(x) %in% c("factor","character","numeric","integer"))){return(paste0("question is 'select_multiple' but data is class:",class(x)))}
   }
 
   if(type %in% c("numeric")){
@@ -109,6 +108,27 @@ compare_question_type<-function(x,type){
 }
 
 
+check_data_values_in_choices<-function(data,questionnaire){
+  rq<-questionnaire$raw_questionnaire()
+  categorical_vars<-sapply(names(data),questionnaire$question_is_categorical)
+  categorical_vars<-names(categorical_vars[categorical_vars])
+  ### "categorical_vars": vector of s1 and sm variable names
 
+  var_row_in_q<-match(categorical_vars,rq$questions$name)
+  var_types<-rq$questions$type[var_row_in_q] %>% as.character
+  var_types<-var_types %>%
+    gsub("[[:space:]]*\\b*select_one\\b*[[:space:]]*","",.) %>%
+    gsub("[[:space:]]*\\b*select_multiple\\b*[[:space:]]*","",.)
+  ### "var_types": vector of variable "type" (i.e. "yes_no"). Parallel to "categorical_vars"
 
+  lost_choices<-lapply(1:length(categorical_vars),function(var_i){
 
+    these_choices<-as.character(rq$choices[var_types[var_i]==rq$choices$list_name,"name"])
+    unique_in_data<-unique(data[[categorical_vars[var_i]]] %>% as.character %>% strsplit(" ") %>% unlist)
+
+    values_not_in_questionnaire<-unique_in_data[!(unique_in_data %in% c(these_choices,NA))]
+    return(tibble::tibble(values_not_in_questionnaire=values_not_in_questionnaire,variable=rep(categorical_vars[var_i])))
+    }) %>% do.call(rbind,.)
+
+    kobostandards:::new_issues(issue=rep("select_one or select_multiple values in data that are not listed in the questionnaire (data values split by on \" \" (spaces))",nrow(lost_choices)),affected_files="data/questionnaire",affected_variables=lost_choices$variable,severity="minor",comment = paste("value: ",lost_choices$values_not_in_questionnaire))
+}

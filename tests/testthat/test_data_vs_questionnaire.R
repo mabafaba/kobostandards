@@ -33,3 +33,46 @@ testthat::test_that("check_data_match_questionnaire: skip test on bad input",{
   expect_true(nrow(kobostandards::check_data_match_questionnaire(NULL,NULL,NULL))==1)
 
 })
+
+
+
+
+
+
+
+
+
+
+testthat::test_that("check_data_match_questionnaire: skip test on bad input",{
+  # expect no error [ achieved with "expect_error({},NA)" ]:
+  data_fake_choices<-data
+  data_fake_choices$denselypopulated
+  data_fake_choices$denselypopulated<-as.character(data_fake_choices$denselypopulated)
+  data_fake_choices$denselypopulated[sample(1:nrow(data_fake_choices))]<-"not_a_choice"
+  issues<-check_data_values_in_choices(data_fake_choices,questionnaire = load_questionnaire(data,questions,choices))
+  testthat::expect_true(nrow(issues)==1)
+  testthat::expect_true(grepl("not_a_choice",issues$comment))
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
