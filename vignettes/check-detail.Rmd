@@ -27,7 +27,7 @@ Runs all checks (depending on which input is provided):
 
 
 
-## Which Issues may be raised?
+## Which Issues may be raised? - individual inputs
 
 ### Data
 
@@ -48,6 +48,31 @@ Runs all checks (depending on which input is provided):
 
 - _choices is not a data frame_ (critical)
 
+
+### Sampling frame
+- _could not check samplingframe_ (critical)
+
+- _samplingframe has no categorical column (stratum names) - skipping further checks on stratum column_ (critical)
+- _samplingframe has more than one categorical column (stratum names) - skipping further checks on stratum column_ (critical)
+
+- _samplingframe has no purely numerical (population) column - skipping any further checks on population column_ (critical)
+- _samplingframe has more than one numerical (population) column_ (critical)
+- _no stratum can have 0 or negative population_ (critical)
+- _duplicate stratum name in samplingframe_ (critical)
+- _samplingframe must not contain NAs_ (critical)
+
+- _samplingframe should only have two columns_ (minor)
+
+
+### Analysis plan
+- _could not check analysisplan - not a data.frame_ (critical)
+- _could not check analysisplan - 0 rows_ (critical)
+- _could not check analysisplan standard variables (not a data frame)_ (critical)
+- _could not find standardised column names in analysis plan_ (critical)
+
+
+## Which Issues may be raised? - inconsistencies between different inputs
+
 ### Data vs. Questionnaire
 
 - _could not check data against questionnaire (i.e. koboquest::load_questionnaire() throws an error)_ (critical)
@@ -57,35 +82,13 @@ Runs all checks (depending on which input is provided):
 - _select_one or select_multiple values in data that are not listed in the questionnaire_ (minor)
 
 
-## checks that are not (yet) implemented but should be:
+### Data vs. Analysis Plan
+- _could not check match between data and analysis plan - data is not a data.frame_ (critical)
+- _could not check match between data and analysis plan - analysisplan is not a data.frame_ (critical)
+- _analysisplan variable not in data_ (critical)
 
-### check_input_samplingframe()
-- _no stratum column_
-- _no population (numeric only) column_
-- _population column not all numeric_
-- _strata names not unique_
-- _population size can not be zero_
-- _stratum name can not be empty_
-- _population can not be empty_
-- _sampling frame should only have two columns_
-
-
-
-
-check_input_match_data_samplingframe<-function(samplingframe,data){}
-
-check_input_match_questionnaire_samplingframe<-function(samplingframe,data){}
-
-check_input_match_questionnaire_analysisplan<-function(samplinframe,data){}
-
-check_input_match_data_analysisplan<-function(samplinframe,data){}
-
-
-
-
-
-
-
-
-
-
+<!-- ## checks that are not (yet) implemented but should be: -->
+<!-- check_input_match_data_samplingframe<-function(samplingframe,data){} -->
+<!-- check_input_match_questionnaire_samplingframe<-function(samplingframe,data){} -->
+<!-- check_input_match_questionnaire_analysisplan<-function(samplinframe,data){} -->
+<!-- check_input_match_data_analysisplan<-function(samplinframe,data){} -->

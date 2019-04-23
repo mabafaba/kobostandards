@@ -10,8 +10,9 @@ check_input<-function(data=NULL,questions=NULL,choices=NULL,samplingframe=NULL,a
   data_issues<-check_input_data(data)
   questions_issues<-check_input_questionnaire_questions(questions)
   choices_issues<-check_input_questionnaire_choices(choices)
-  data_questionnaire_issues<-check_input_match_data_questionnaire(data,questions,choices)
-
-  rbind(data_issues,questions_issues,choices_issues,data_questionnaire_issues)
+  data_match_questionnaire_issues<-check_input_match_data_questionnaire(data,questions,choices)
+  data_match_analysisplan_issues<-check_input_match_data_analysisplan(data,analysisplan
+                                                                      )
+  rbind(data_issues,questions_issues,choices_issues,data_match_questionnaire_issues,data_match_analysisplan_issues)
 
 }

@@ -9,7 +9,7 @@ q<-load_questionnaire(data,questions,choices)
 
 
 
-iss<-check_input_samplingframe(samplingframe)
+iss<-check_input_analysisplan(samplingframe)
 
 
 #

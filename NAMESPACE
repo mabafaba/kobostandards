@@ -2,8 +2,10 @@
 
 export("%>%")
 export(check_input)
+export(check_input_analysisplan)
 export(check_input_data)
 export(check_input_match_data_questionnaire)
 export(check_input_questionnaire)
 export(check_input_samplingframe)
+export(new_issues)
 importFrom(magrittr,"%>%")

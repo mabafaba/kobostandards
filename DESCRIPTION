@@ -17,7 +17,8 @@ Imports:
     dplyr,
     tibble,
     koboquest (>= 0.0.0.9000),
-    purrr
+    purrr,
+    crayon
 Remotes: 
     mabafaba/koboquest
 RoxygenNote: 6.1.1

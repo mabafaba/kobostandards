@@ -5,7 +5,7 @@
 check_input_samplingframe<-function(samplingframe){
  issues<-kobostandards:::new_issues()
 
- # could not check?
+ # if could not check custom issue
  could_not_check_issue<-kobostandards:::new_issues("could not check samplingframe",affected_files="samplingframe",severity="critical")
 
  if(!is.data.frame(samplingframe)){
@@ -23,7 +23,7 @@ check_input_samplingframe<-function(samplingframe){
 
 
  if(ncol(samplingframe)!=2){
-   add_issues(issues)<-new_issues("samplingframe should only have two columns",severity = "minor")
+   add_issues(issues)<-new_issues("samplingframe should only have two columns",affected_files = "samplingframe",severity = "minor")
  }
 
 
@@ -37,6 +37,7 @@ issues
 
 
 check_input_samplingframe_population_column<-function(samplingframe){
+  # find possible population columns
   sf_classes<-sapply(samplingframe,class)
   sf_classes<-gsub("factor","categorical",sf_classes)
   sf_classes<-gsub("integer|decimal|numeric|double","numeric",sf_classes)
@@ -45,12 +46,13 @@ check_input_samplingframe_population_column<-function(samplingframe){
 
   issues<-new_issues()
 
+  # if not sure about population column or none found, return custom issue:
   if(length(which(sf_classes=="numeric"))>1){
-    add_issues(issues)<-new_issues("samplingframe has more than one numerical (population) column")
+    add_issues(issues)<-new_issues("samplingframe has more than one numerical (population) column",affected_files = "samplingframe",severity = "critical")
   }
 
   if(length(which(sf_classes=="numeric"))<1){
-    add_issues(issues)<-new_issues("samplingframe has no purely numerical (population) column - skipping any further checks on population column")
+    add_issues(issues)<-new_issues("samplingframe has no purely numerical (population) column - skipping any further checks on population column",affected_files = "samplingframe",severity = "critical")
     return(issues)
   }
 
@@ -80,7 +82,7 @@ check_input_samplingframe_stratum_column<-function(samplingframe){
   stratum_col<-sf_classes[sf_classes=="categorical"][1] %>% names
   population_col<-sf_classes[sf_classes=="numeric"][1] %>% names
 
-  if(!is.data.frame(samplingframe)){return(new_issue("could not check samplingframe stratum column",comment="samplingframe not a data.frame"))}
+  if(!is.data.frame(samplingframe)){return(new_issues("could not check samplingframe stratum column",comment="samplingframe not a data.frame"))}
 
   if(length(which(sf_classes=="categorical"))>1){
     return(new_issues("samplingframe has more than one categorical column (stratum names) - skipping further checks on stratum column",severity="critical"))
