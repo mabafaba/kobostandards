@@ -74,6 +74,7 @@ Runs all checks (depending on which input is provided):
 - _illegal dependent.var.type_ (critical)
 - _illegal independent.var.type_ (critical)
 - _non empty row without dependent.var - skipping this row _ (critical)
+- _logical conditions disrespected (i.e. can't have group_difference without indepdendent.var)_
 
 ## Which Issues may be raised? - inconsistencies between different inputs
 
@@ -87,9 +88,16 @@ Runs all checks (depending on which input is provided):
 
 ### Questionnaire vs. Choices
 
-- _could not check questionnaire against choices
+- _could not check questionnaire against choices (critical)
 
-### Data vs. Sampling Frame (from koboquest)
+### Choices vs. Data
+
+- _SMchoices are not list_name.choice_name_ (critical)
+
+### Data vs. Sampling Frame
+
+- _sample bigger than population_ (critical)
+- _strata names not in sampling frame_
 
 ### Data vs. Analysis Plan
 - _could not check match between data and analysis plan - data is not a data.frame_ (critical)
