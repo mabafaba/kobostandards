@@ -70,7 +70,6 @@ Runs all checks (depending on which input is provided):
 - _could not check analysisplan standard variables (not a data frame)_ (critical)
 - _could not find standardised column names in analysis plan_ (critical)
 
-
 ## Which Issues may be raised? - inconsistencies between different inputs
 
 ### Data vs. Questionnaire
