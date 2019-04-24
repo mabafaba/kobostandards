@@ -85,7 +85,7 @@ Runs all checks (depending on which input is provided):
 ### Data vs. Analysis Plan
 - _could not check match between data and analysis plan - data is not a data.frame_ (critical)
 - _could not check match between data and analysis plan - analysisplan is not a data.frame_ (critical)
-- _analysisplan variable not in data_ (critical)
+- _analysisplan variable not in data_ (critical)  
 
 <!-- ## checks that are not (yet) implemented but should be: -->
 <!-- check_input_match_data_samplingframe<-function(samplingframe,data){} -->
