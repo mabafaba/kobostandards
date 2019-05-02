@@ -70,7 +70,7 @@ check_all_variables_in_questionnaire<-function(data_colnames,questionnaire){
 
 check_data_types_match_questionnaire<-function(data,q){
 
-  types<-  sapply(as.character(questions$name[!is.na(questions$name)]),function(var){
+  types<-  sapply(as.character(q$name[!is.na(q$name)]),function(var){
 
     if(var %in% names(data)){
 
@@ -120,6 +120,9 @@ check_data_values_in_choices<-function(data,questionnaire){
   rq<-questionnaire$raw_questionnaire()
   categorical_vars<-sapply(names(data),questionnaire$question_is_categorical)
   categorical_vars<-names(categorical_vars[categorical_vars])
+  if(length(categorical_vars)==0){
+    return(tibble::tibble(values_not_in_questionnaire=character(0),variable=character(0)))
+  }
   ### "categorical_vars": vector of s1 and sm variable names
 
   var_row_in_q<-match(categorical_vars,rq$questions$name)
