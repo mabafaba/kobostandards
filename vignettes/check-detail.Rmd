@@ -36,7 +36,7 @@ Runs all checks (depending on which input is provided):
 
 ### Questionnaire Questions
 
-- _questions are not a data frame_ (critical)
+- _questions is not a data frame_ (critical)
 - _questions do not contain column 'type'_ (critical)
 - _questions do not contain column 'name'_ (critical)
 - _illegal question type_ (critical)
@@ -47,7 +47,8 @@ Runs all checks (depending on which input is provided):
 ### Questionnaire Choices
 
 - _choices is not a data frame_ (critical)
-
+- _choices does not contain column 'name'_ (critical)
+- _choices does not contain column 'list_name'_ (critical)
 
 ### Sampling frame
 - _could not check samplingframe_ (critical)
@@ -69,6 +70,11 @@ Runs all checks (depending on which input is provided):
 - _could not check analysisplan - 0 rows_ (critical)
 - _could not check analysisplan standard variables (not a data frame)_ (critical)
 - _could not find standardised column names in analysis plan_ (critical)
+- _illegal hypothesis.type_ (critical)
+- _illegal dependent.var.type_ (critical)
+- _illegal independent.var.type_ (critical)
+- _non empty row without dependent.var - skipping this row _ (critical)
+- _logical conditions disrespected (i.e. can't have group_difference without indepdendent.var)_
 
 ## Which Issues may be raised? - inconsistencies between different inputs
 
@@ -80,6 +86,18 @@ Runs all checks (depending on which input is provided):
 - _data column not found in questionnaire_ (minor)
 - _select_one or select_multiple values in data that are not listed in the questionnaire_ (minor)
 
+### Questionnaire vs. Choices
+
+- _could not check questionnaire against choices (critical)
+
+### Choices vs. Data
+
+- _SMchoices are not list_name.choice_name_ (critical)
+
+### Data vs. Sampling Frame
+
+- _sample bigger than population_ (critical)
+- _strata names not in sampling frame_
 
 ### Data vs. Analysis Plan
 - _could not check match between data and analysis plan - data is not a data.frame_ (critical)
