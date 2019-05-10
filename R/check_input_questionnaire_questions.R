@@ -1,6 +1,8 @@
 
-
-
+#' Check if questionnaire questions sheet format is good
+#' @param questions kobo questions sheet as data frame
+#' @return data frame with issues (see `new_issues()` for details)
+#' @export
 check_input_questionnaire_questions<-function(questions){
 
 
@@ -45,29 +47,15 @@ check_input_questionnaire_questions<-function(questions){
 
 
 
-check_input_questionnaire_choices<-function(choices){
-
-  issues<-new_issues()
-
-  if(!is.data.frame(choices)){
-    add_issues(issues)<-new_issues(issue = "choices is not a data frame",
-                                   affected_files = "choices",
-                                   affected_variables = "ALL",
-                                   severity = "critical")
-  }
-}
-
-
-
 
 
 check_questions_types<-function(questions){
 
   default_issue_when_skipped<-new_issues("question types could not be checked",
-                                 "questions",
-                                 "ALL",
-                                 "critical",
-                                 "'questions' format has another critical issue that made this check impossible")
+                                         "questions",
+                                         "ALL",
+                                         "critical",
+                                         "'questions' format has another critical issue that made this check impossible")
 
   if(is.null(questions)){return(default_issue_when_skipped)}
   if(!is.data.frame(questions)){return(default_issue_when_skipped)}
@@ -80,7 +68,7 @@ check_questions_types<-function(questions){
              affected_variables = questions$name[illegal_rows],
              severity = "problematic",
              comment = paste("illegal type value:",as.character(questions$type[illegal_rows]))
-             )
+  )
 }
 
 
@@ -88,7 +76,7 @@ check_questions_relevant<-function(questions){
 
   if(!is.data.frame(questions)){
     return(
-    new_issues("'relevant' skip logic could not be checked","questions","ALL","critical","questions not a data frame or no 'relevant' column")
+      new_issues("'relevant' skip logic could not be checked","questions","ALL","critical","questions not a data frame or no 'relevant' column")
     )
   }
 
@@ -102,17 +90,17 @@ check_questions_relevant<-function(questions){
 
   condition_vars<-do.call(rbind,
                           mapply(function(vars,found,id){if(length(vars)==0){return(NULL)}
-    return(tibble::tibble(vars,found,id))
-  },condition_vars,condition_vars_found,1:length(condition_vars)) )
+                            return(tibble::tibble(vars,found,id))
+                          },condition_vars,condition_vars_found,1:length(condition_vars)) )
 
 
   condition_vars_not_found<-condition_vars[!condition_vars$found,]
 
   vars_not_found_issues<-new_issues(issue=paste0("variable '",condition_vars_not_found[,"vars"],"' used in 'relevant' condition not found in question 'name'"),
-             affected_files = 'questions',
-             severity = "critical",
-             affected_variables = as.character(questions$name)[condition_vars_not_found$id],
-             comment = "skip logic will not be calculated correctly")
+                                    affected_files = 'questions',
+                                    severity = "critical",
+                                    affected_variables = as.character(questions$name)[condition_vars_not_found$id],
+                                    comment = "skip logic will not be calculated correctly")
 
 
   # evaluate conditions on fake data
@@ -128,13 +116,13 @@ check_questions_relevant<-function(questions){
   not<-function(x){!x}
   attach(fakedata)
   did_condition_evaluate<-do.call(rbind,lapply(q_relevant$conditions_as_r,function(condition){
-      tryCatch({
-        eval(parse(text = condition))
-        return(tibble::tibble(success=TRUE,message=""))
-      },error=function(e){
-        return(tibble::tibble(success=F,message=e$message))
-      })
-    }))
+    tryCatch({
+      eval(parse(text = condition))
+      return(tibble::tibble(success=TRUE,message=""))
+    },error=function(e){
+      return(tibble::tibble(success=F,message=e$message))
+    })
+  }))
 
   detach(fakedata)
 
@@ -153,10 +141,3 @@ check_questions_relevant<-function(questions){
   add_issues(vars_not_found_issues)<-eval_issues
   vars_not_found_issues
 }
-
-
-
-
-
-
-

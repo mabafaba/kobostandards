@@ -36,7 +36,7 @@ Runs all checks (depending on which input is provided):
 
 ### Questionnaire Questions
 
-- _questions are not a data frame_ (critical)
+- _questions is not a data frame_ (critical)
 - _questions do not contain column 'type'_ (critical)
 - _questions do not contain column 'name'_ (critical)
 - _illegal question type_ (critical)
@@ -47,7 +47,8 @@ Runs all checks (depending on which input is provided):
 ### Questionnaire Choices
 
 - _choices is not a data frame_ (critical)
-
+- _column missing: 'name'_ (critical)
+- _column missing: 'list\_name'_  (critical)
 
 ### Sampling frame
 - _could not check samplingframe_ (critical)
@@ -69,7 +70,9 @@ Runs all checks (depending on which input is provided):
 - _could not check analysisplan - 0 rows_ (critical)
 - _could not check analysisplan standard variables (not a data frame)_ (critical)
 - _could not find standardised column names in analysis plan_ (critical)
-
+- _illegal hypothesis type_ (critical)
+- _missing required values for analysis plan column: dependent.variable_ (critical)
+- _missing required values for analysis plan column: independent.variable_ (critical)
 ## Which Issues may be raised? - inconsistencies between different inputs
 
 ### Data vs. Questionnaire

@@ -38,13 +38,12 @@ new_issues<-function(issue=character(0),
 }
 
 
-
 print.ks_issue<-function(x) {
   if(nrow(x)==0){cat(crayon::green("empty table of kobostandard inconsistencies - congrats, no inconsistencies here!"))
     return(invisible(x))
     }
   cat(crayon::silver(paste("",nrow(x),"issues in total:\n")))
-  affected_files<-table(x$affected_files,x$severity) %>% as.data.frame %>% as_tibble %>% arrange(Var1,desc(Var2),Freq)
+  affected_files<-table(x$affected_files,x$severity) %>% as.data.frame %>% (tibble::as_tibble) %>% (dplyr::arrange)(Var1,desc(Var2),Freq)
   affected_files<-affected_files[affected_files$Freq!=0,]
   apply(affected_files,1,function(x){paste0(crayon::black(x[1]),
                                             " ",

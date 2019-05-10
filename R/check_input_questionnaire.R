@@ -10,3 +10,12 @@ check_input_questionnaire<-function(questions,choices){
   # add_issues(issues)<-check_input_questionnaire_questions_vs_choices(questions,choices)
   return(issues)
 }
+
+
+
+
+
+
+
+
+

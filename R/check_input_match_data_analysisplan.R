@@ -10,8 +10,6 @@ check_input_match_data_analysisplan<-function(data,analysisplan){
 
   add_issues(issues)<-check_analysisplan_vars_in_data(data,analysisplan)
 
-
-
 }
 
 
@@ -20,17 +18,18 @@ check_input_match_data_analysisplan<-function(data,analysisplan){
 
 check_analysisplan_vars_in_data<-function(data,analysisplan){
   ap_vars<-get_all_analysisplan_variables(analysisplan)
-
-  new_issues(rep("variable named in analysis plan that doesn't exist in data",length(ap_vars)),
+  ap_vars_not_found<-ap_vars[!(ap_vars %in% names(data))]
+  ap_vars_not_found<-ap_vars_not_found[!(ap_vars_not_found %in% c(NA,""," "))]
+  new_issues(rep("variable named in analysis plan that doesn't exist in data",length(ap_vars_not_found)),
              affected_files = "data/analysisplan",
-             affected_variables = ap_vars,severity = "critical")
+             affected_variables = ap_vars_not_found,severity = "critical")
 }
 
 
 
 get_all_analysisplan_variables<-function(analysisplan){
   issues<-new_issues()
-  analysisplan<-purrr::map(analysisplan,as.character) %>% as_tibble
+  analysisplan<-purrr::map(analysisplan,as.character) %>% (tibble::as_tibble)
   ap_columns_with_variable_names<-c("repeat.for.variable","independent.variable","dependent.variable")
   var_cols_in_ap<-ap_columns_with_variable_names[ap_columns_with_variable_names%in%names(analysisplan)]
 
