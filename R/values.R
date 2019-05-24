@@ -1,5 +1,10 @@
 legal_kobo_question_types<-function(){
   types<-matrix(c(
+    "today", "today time stamp",
+    "begin group", "group start",
+    "end group", "group end",
+    "begin_group","group start",
+    "end_group","group end",
   "integer","Integer (i.e., whole number) input.",
   "decimal","Decimal input.",
   "range","Range input.",
@@ -33,10 +38,18 @@ legal_kobo_question_types<-function(){
 }
 
 questionnaire_questions_is_type_legal<-function(types){
-  lapply(types,function(x){
+
+  legal<-lapply(types,function(x){
   type_split<-x %>% strsplit(" ") %>% unlist
   any(!is.na(match(type_split,legal_kobo_question_types()[,1])))
   }
   ) %>% unlist
+
+  legal[types=="begin group"]<- TRUE
+  legal[types=="end group"]<- TRUE
+
+  legal[types=="begin repeat"]<- TRUE
+  legal[types=="end repeat"]<- TRUE
+  legal
 }
 

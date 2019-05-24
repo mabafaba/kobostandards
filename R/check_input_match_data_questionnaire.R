@@ -21,10 +21,11 @@ check_input_match_data_questionnaire<-function(data,questions,choices){
   }
 
   questionnaire<-tryCatch({
+    label_col<-grep("label",names(choices),value = T)[1]
   koboquest::load_questionnaire(data,
                                    questions,
                                    choices,
-                                   choices.label.column.to.use = "label..English")
+                                   choices.label.column.to.use = label_col)
   },error=function(e){
     could_not_check_issue$comment<-paste0("loading questionnaire failed with error: ",e$message)
     return(could_not_check_issue)
@@ -48,6 +49,7 @@ check_input_match_data_questionnaire<-function(data,questions,choices){
 check_all_variables_in_questionnaire<-function(data_colnames,questionnaire){
   # data_colnames<-names(data)
   # questionnaire<-load_questionnaire(data,questions,choices)
+  data_colnames<-data_colnames[data_colnames!="" & !is.na(data_colnames)]
   is_primary_question_column<-sapply(data_colnames,questionnaire$question_in_questionnaire)
   is_select_multiple_choice_column<-sapply(data_colnames,questionnaire$question_is_sm_choice)
   missing<-!(is_primary_question_column | is_select_multiple_choice_column)
@@ -134,7 +136,7 @@ check_data_values_in_choices<-function(data,questionnaire){
 
   lost_choices<-lapply(1:length(categorical_vars),function(var_i){
 
-    these_choices<-as.character(rq$choices[var_types[var_i]==rq$choices$list_name,"name"])
+    these_choices<-as.character(rq$choices[var_types[var_i]==rq$choices$list_name,"name"] %>% unlist)
     unique_in_data<-unique(data[[categorical_vars[var_i]]] %>% as.character %>% strsplit(" ") %>% unlist)
 
     values_not_in_questionnaire<-unique_in_data[!(unique_in_data %in% c(these_choices,NA))]

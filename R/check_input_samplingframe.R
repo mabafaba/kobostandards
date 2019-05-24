@@ -59,7 +59,7 @@ check_input_samplingframe_population_column<-function(samplingframe){
 
 
 
-  if(any(as.numeric(samplingframe[,population_col])<=0,na.rm = T)){
+  if(any(as.numeric(samplingframe[[population_col]])<=0,na.rm = T)){
     samplingframe[1:3,2]<-0
     strata_0_pop<-samplingframe[which(as.numeric(samplingframe[,population_col])<=0),stratum_col]
     add_issues(issues)<-kobostandards:::new_issues(rep("no stratum can have 0 or negative population",
@@ -77,7 +77,7 @@ return(issues)
 
 check_input_samplingframe_stratum_column<-function(samplingframe){
   sf_classes<-sapply(samplingframe,class)
-  sf_classes<-gsub("factor","categorical",sf_classes)
+  sf_classes<-gsub("factor|character","categorical",sf_classes)
   sf_classes<-gsub("integer|decimal|numeric|double","numeric",sf_classes)
   stratum_col<-sf_classes[sf_classes=="categorical"][1] %>% names
   population_col<-sf_classes[sf_classes=="numeric"][1] %>% names
@@ -102,7 +102,7 @@ check_input_samplingframe_stratum_column<-function(samplingframe){
   if(length(stratum_col)>0){
     stratum_col<-stratum_col[1]
     if(any(duplicated(samplingframe[,stratum_col]))){
-      duplicated_strata_names <- samplingframe[,stratum_col][duplicated(samplingframe[,stratum_col])] %>% unique
+      duplicated_strata_names <- samplingframe[duplicated(samplingframe[,stratum_col]),stratum_col] %>% unique
       add_issues(issues)<-kobostandards:::new_issues(
         rep("duplicate stratum name in samplingframe",
             length(duplicated_strata_names)),
