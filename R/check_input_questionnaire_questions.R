@@ -36,7 +36,7 @@ check_input_questionnaire_questions<-function(questions){
 
   add_issues(issues)<-check_questions_types(questions)
   add_issues(issues)<-check_questions_relevant(questions)
-
+  add_issues(issues)<-check_questions_alphanumeric_lowercase_names(questions)
 
 
 
@@ -47,6 +47,20 @@ check_input_questionnaire_questions<-function(questions){
 
 
 
+
+check_questions_alphanumeric_lowercase_names<-function(questions){
+  if(is.null(questions)){return(new_issues())}
+  if(!is.data.frame(questions)){return(new_issues())}
+
+  question_names <- as.character(questions$name[!(questions$name %in% c(NA,""," "))])
+  invalid_names<-question_names[question_names!=xlsformfill:::to_alphanumeric_lowercase(question_names)]
+  if(length(invalid_names)==0){
+    return(new_issues())
+  }
+  new_issues(rep("question name should contain only lower case letters, numbers, dots and underscores",length(invalid_names))
+                             ,affected_files = "questionnaire questions",
+                             affected_variables = invalid_names,severity = "problematic")
+}
 
 
 check_questions_types<-function(questions){
@@ -93,7 +107,7 @@ check_questions_relevant<-function(questions){
                             return(tibble::tibble(vars,found,id))
                           },condition_vars,condition_vars_found,1:length(condition_vars)) )
 
-
+  if(is.null(condition_vars)){return(new_issues())}
   condition_vars_not_found<-condition_vars[!condition_vars$found,]
 
   vars_not_found_issues<-new_issues(issue=paste0("variable '",condition_vars_not_found[,"vars"],"' used in 'relevant' condition not found in question 'name'"),
