@@ -18,9 +18,11 @@ Imports:
     tibble,
     koboquest (>= 0.0.0.9000),
     purrr,
-    crayon
-Remotes: 
-    mabafaba/koboquest
+    crayon,
+    xlsformfill (>= 0.1.0)
+Remotes:  
+    mabafaba/koboquest,
+    mabafaba/xlsformfill
 RoxygenNote: 6.1.1
 Depends: 
     magrittr
